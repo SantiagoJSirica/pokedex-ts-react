@@ -33,3 +33,24 @@
   text-align: center;
   color: #757575;
 }
+
+/* ===== Buscador ===== */
+.search-bar {
+  max-width: 1100px;
+  margin: 20px auto 0;
+}
+
+.search-bar input {
+  width: 100%;
+  max-width: 400px;
+  padding: 10px 16px;
+  font-size: 16px;
+  border: 2px solid #e0e0e0;
+  border-radius: 999px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.search-bar input:focus {
+  border-color: #e53935;
+}
