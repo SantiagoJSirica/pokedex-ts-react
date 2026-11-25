@@ -6,4 +6,13 @@
 
 body {
   font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+
+  /* Color claro de fondo */
+  background-color: #f3f4f6;
+
+  /* Mosaico de pokébolas: una imagen SVG que se repite */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cg fill='none' stroke='%23d9dbe1' stroke-width='3'%3E%3Cg id='p'%3E%3Ccircle cx='30' cy='30' r='18'/%3E%3Cpath d='M12 30h11M37 30h11'/%3E%3Ccircle cx='30' cy='30' r='6'/%3E%3C/g%3E%3Cuse href='%23p' x='60' y='60'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 120px 120px;
+  background-attachment: fixed; /* el fondo queda quieto al hacer scroll */
 }
