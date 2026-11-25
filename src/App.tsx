@@ -6,6 +6,7 @@ import { Header } from './components/Header';
 import { PokemonList } from './components/PokemonList';
 import { SearchBar } from './components/SearchBar';
 import { TypeFilter } from './components/TypeFilter';
+import { PokemonDetailModal } from './components/PokemonDetailModal';
 
 function App() {
   // Estado con la lista completa de pokémon (por ahora, los datos locales)
@@ -19,6 +20,9 @@ function App() {
 
   // Interacción: ids de los pokémon marcados como favoritos
   const [favoritos, setFavoritos] = useState<number[]>([]);
+
+  // Pokémon elegido para ver el detalle (null = modal cerrado)
+  const [pokemonSeleccionado, setPokemonSeleccionado] = useState<Pokemon | null>(null);
 
   function handleBuscar(texto: string): void {
     setBusqueda(texto);
@@ -35,6 +39,14 @@ function App() {
     } else {
       setFavoritos([...favoritos, id]);
     }
+  }
+
+  function handleSeleccionar(pokemon: Pokemon): void {
+    setPokemonSeleccionado(pokemon);
+  }
+
+  function handleCerrarDetalle(): void {
+    setPokemonSeleccionado(null);
   }
 
   // Lista filtrada: un pokémon se muestra solo si cumple LOS DOS filtros
@@ -59,7 +71,13 @@ function App() {
         pokemons={pokemonsFiltrados}
         favoritos={favoritos}
         onToggleFavorito={handleToggleFavorito}
+        onSeleccionar={handleSeleccionar}
       />
+
+      {/* El modal solo se muestra si hay un pokémon seleccionado */}
+      {pokemonSeleccionado !== null && (
+        <PokemonDetailModal pokemon={pokemonSeleccionado} onCerrar={handleCerrarDetalle} />
+      )}
     </div>
   );
 }

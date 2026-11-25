@@ -1,19 +1,32 @@
+import type { MouseEvent } from 'react';
 import type { Pokemon } from '../types/pokemon';
 import { estilosTipos, formatearNumero, capitalizar } from '../utils/tipos';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
-  esFavorito: boolean;                    // ¿está marcado como favorito?
-  onToggleFavorito: (id: number) => void; // avisa a App que se tocó el corazón
+  esFavorito: boolean;                          // ¿está marcado como favorito?
+  onToggleFavorito: (id: number) => void;       // avisa a App que se tocó el corazón
+  onSeleccionar: (pokemon: Pokemon) => void;    // avisa a App que se tocó la tarjeta
 }
 
-export function PokemonCard({ pokemon, esFavorito, onToggleFavorito }: PokemonCardProps) {
-  function handleClickFavorito(): void {
+export function PokemonCard({
+  pokemon,
+  esFavorito,
+  onToggleFavorito,
+  onSeleccionar,
+}: PokemonCardProps) {
+  function handleClickTarjeta(): void {
+    onSeleccionar(pokemon);
+  }
+
+  function handleClickFavorito(evento: MouseEvent<HTMLButtonElement>): void {
+    // Evita que el clic en el corazón "suba" a la tarjeta y abra el modal
+    evento.stopPropagation();
     onToggleFavorito(pokemon.id);
   }
 
   return (
-    <article className="pokemon-card">
+    <article className="pokemon-card" onClick={handleClickTarjeta}>
       <span className="pokemon-numero">{formatearNumero(pokemon.id)}</span>
 
       <button
