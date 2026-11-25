@@ -1,4 +1,5 @@
-import type { TipoPokemon } from '../types/pokemon';
+
+import type { TipoPokemon, FiltroTipo } from '../types/pokemon';
 
 // Cómo se muestra cada tipo: nombre en español, color de fondo y color del texto
 interface EstiloTipo {
@@ -38,3 +39,20 @@ export function formatearNumero(id: number): string {
 export function capitalizar(texto: string): string {
   return texto.charAt(0).toUpperCase() + texto.slice(1);
 }
+
+// ----- Type guards: comprueban si un string es un tipo válido -----
+
+// ¿Este texto es uno de los 18 tipos de pokémon?
+export function esTipoPokemon(valor: string): valor is TipoPokemon {
+  return valor in estilosTipos;
+}
+
+// ¿Este texto es una opción válida del filtro (un tipo o "todos")?
+export function esFiltroTipo(valor: string): valor is FiltroTipo {
+  return valor === 'todos' || esTipoPokemon(valor);
+}
+
+// Los 18 tipos, ordenados alfabéticamente por su nombre en español
+export const listaTipos: TipoPokemon[] = Object.keys(estilosTipos)
+  .filter(esTipoPokemon)
+  .sort((a, b) => estilosTipos[a].nombre.localeCompare(estilosTipos[b].nombre));

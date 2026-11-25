@@ -1,32 +1,47 @@
 import { useState } from 'react';
 import './App.css';
-import type { Pokemon } from './types/pokemon';
+import type { Pokemon, FiltroTipo } from './types/pokemon';
 import { pokemonsMock } from './data/mockData';
 import { PokemonList } from './components/PokemonList';
 import { SearchBar } from './components/SearchBar';
+import { TypeFilter } from './components/TypeFilter';
 
 function App() {
   // Estado con la lista completa de pokémon (por ahora, los datos locales)
   const [pokemons] = useState<Pokemon[]>(pokemonsMock);
 
-  // Estado con el texto del buscador
+  // Filtro 1: texto del buscador
   const [busqueda, setBusqueda] = useState<string>('');
 
-  // Callback que recibe SearchBar: actualiza el estado con el texto nuevo
+  // Filtro 2: tipo seleccionado
+  const [tipoSeleccionado, setTipoSeleccionado] = useState<FiltroTipo>('todos');
+
   function handleBuscar(texto: string): void {
     setBusqueda(texto);
   }
 
-  // Lista filtrada: se recalcula sola en cada render a partir de los estados
+  function handleCambiarTipo(tipo: FiltroTipo): void {
+    setTipoSeleccionado(tipo);
+  }
+
+  // Lista filtrada: un pokémon se muestra solo si cumple LOS DOS filtros
   const textoNormalizado = busqueda.trim().toLowerCase();
-  const pokemonsFiltrados = pokemons.filter((pokemon) =>
-    pokemon.nombre.toLowerCase().includes(textoNormalizado)
-  );
+  const pokemonsFiltrados = pokemons.filter((pokemon) => {
+    const coincideNombre = pokemon.nombre.toLowerCase().includes(textoNormalizado);
+    const coincideTipo =
+      tipoSeleccionado === 'todos' || pokemon.tipos.includes(tipoSeleccionado);
+    return coincideNombre && coincideTipo;
+  });
 
   return (
     <div className="app">
       <h1>Pokédex</h1>
-      <SearchBar valor={busqueda} onBuscar={handleBuscar} />
+
+      <div className="filtros">
+        <SearchBar valor={busqueda} onBuscar={handleBuscar} />
+        <TypeFilter valor={tipoSeleccionado} onCambiarTipo={handleCambiarTipo} />
+      </div>
+
       <PokemonList pokemons={pokemonsFiltrados} />
     </div>
   );
