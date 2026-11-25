@@ -3,12 +3,27 @@ import { estilosTipos, formatearNumero, capitalizar } from '../utils/tipos';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
+  esFavorito: boolean;                    // ¿está marcado como favorito?
+  onToggleFavorito: (id: number) => void; // avisa a App que se tocó el corazón
 }
 
-export function PokemonCard({ pokemon }: PokemonCardProps) {
+export function PokemonCard({ pokemon, esFavorito, onToggleFavorito }: PokemonCardProps) {
+  function handleClickFavorito(): void {
+    onToggleFavorito(pokemon.id);
+  }
+
   return (
     <article className="pokemon-card">
       <span className="pokemon-numero">{formatearNumero(pokemon.id)}</span>
+
+      <button
+        className={esFavorito ? 'boton-favorito activo' : 'boton-favorito'}
+        onClick={handleClickFavorito}
+        aria-label={esFavorito ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+        aria-pressed={esFavorito}
+      >
+        {esFavorito ? '❤️' : '🤍'}
+      </button>
 
       <img
         className="pokemon-imagen"

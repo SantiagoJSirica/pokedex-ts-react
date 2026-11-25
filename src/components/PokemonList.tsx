@@ -3,9 +3,11 @@ import { PokemonCard } from './PokemonCard';
 
 interface PokemonListProps {
   pokemons: Pokemon[];
+  favoritos: number[];                    // ids de los pokémon favoritos
+  onToggleFavorito: (id: number) => void; // se lo pasa a cada tarjeta
 }
 
-export function PokemonList({ pokemons }: PokemonListProps) {
+export function PokemonList({ pokemons, favoritos, onToggleFavorito }: PokemonListProps) {
   // Si no hay pokémon para mostrar (por ejemplo, cuando un filtro no encuentra nada)
   if (pokemons.length === 0) {
     return <p className="lista-vacia">No se encontraron pokémon.</p>;
@@ -14,7 +16,12 @@ export function PokemonList({ pokemons }: PokemonListProps) {
   return (
     <section className="pokemon-grid">
       {pokemons.map((pokemon) => (
-        <PokemonCard key={pokemon.id} pokemon={pokemon} />
+        <PokemonCard
+          key={pokemon.id}
+          pokemon={pokemon}
+          esFavorito={favoritos.includes(pokemon.id)}
+          onToggleFavorito={onToggleFavorito}
+        />
       ))}
     </section>
   );
